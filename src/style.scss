@@ -1,0 +1,9 @@
+/* for both the editor and production */
+.wp-block-pss-blocks-my-styled-gutenberg-block {
+  background-color: yellow;
+  color: darkmagenta;
+  padding: 1em;
+  .testing {
+    color: goldenrod;
+  }
+}
