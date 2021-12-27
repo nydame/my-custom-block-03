@@ -1,26 +1,29 @@
 import { registerBlockType } from '@wordpress/blocks';
-import { useBlockProps } from '@wordpress/block-editor';
+import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
 import './index.scss';
 import './style.scss';
-
-const blockStyle = {
-  backgroundColor: '#900',
-  color: '#fff',
-  padding: '20px',
-}
  
-registerBlockType( 'pss-blocks/my-styled-gutenberg-block', {
+registerBlockType( 'pss-blocks/my-dynamic-gutenberg-block', {
   apiVersion: 2,
-  title: 'Basic Styled Block with ESNext',
-  icon: 'art',
+  title: 'Basic Dynamic Block with ESNext',
+  icon: 'update',
   category: 'design',
   example: {},
-  edit() {
-    const blockProps = useBlockProps();
-    return (<div { ...blockProps }>I am green (from the editor)</div>);
+  attributes: {
+    content: {
+      type: 'string',
+      source: 'html',
+      selector: 'p',
+    },
+    className: 'my-dynamic-gutenberg-block',
   },
-  save() {
+  edit({ attributes, setAttributes }) {
+    const blockProps = useBlockProps();
+    return ( <RichText { ...blockProps } tagName='p' value={ attributes.content } allowedFormats={['core/bold', 'core/link']} onChange={ (content) => setAttributes({ content }) } placeholder={ __(`Say something`) } preserveWhiteSpace /> );
+  },
+  save({ attributes}) {
     const blockProps = useBlockProps.save();
-    return (<div { ...blockProps }>I am yellow (from the frontend)</div>);
+    return ( <div className='howdy'><RichText.Content { ...blockProps } tagName='aside' value={ attributes.content + " - I am static 😑"} preserveWhiteSpace /></div> );
   },
 } );
