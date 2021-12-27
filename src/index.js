@@ -1,6 +1,6 @@
-import { registerBlockType } from '@wordpress/blocks';
-import { useBlockProps, RichText } from '@wordpress/block-editor';
-import { __ } from '@wordpress/i18n';
+const { registerBlockType } = wp.blocks;
+const { useBlockProps, RichText } = wp.blockEditor;
+const { __ } = wp.i18n;
 import './index.scss';
 import './style.scss';
  
@@ -18,12 +18,13 @@ registerBlockType( 'pss-blocks/my-dynamic-gutenberg-block', {
     },
     className: 'my-dynamic-gutenberg-block',
   },
-  edit({ attributes, setAttributes }) {
+  edit: ({ attributes, setAttributes }) => {
     const blockProps = useBlockProps();
+    console.log(wp);
     return ( <RichText { ...blockProps } tagName='p' value={ attributes.content } allowedFormats={['core/bold', 'core/link']} onChange={ (content) => setAttributes({ content }) } placeholder={ __(`Say something`) } preserveWhiteSpace /> );
   },
-  save({ attributes}) {
+  save: ({ attributes}) => {
     const blockProps = useBlockProps.save();
-    return ( <div className='howdy'><RichText.Content { ...blockProps } tagName='aside' value={ attributes.content + " - I am static 😑"} preserveWhiteSpace /></div> );
+    return ( <div className='howdy'><RichText.Content { ...blockProps } tagName='aside' value={ attributes.content + " &mdash ❤️ f"} preserveWhiteSpace /></div> );
   },
 } );
